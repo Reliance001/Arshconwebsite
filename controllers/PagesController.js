@@ -87,7 +87,7 @@ const AdminPage = async (req, res) => {
     const admin = await User.findById(req.user._id).lean();
     const projects = await Project.find();
 
-    res.render("admin/dashboard", {
+    res.render("admin/dashBoard", {
       title: "Arshcon & Form | Admin Dashboard",
       admin, // pass the logged-in admin
       projects,
@@ -397,4 +397,5 @@ module.exports = {
   LoginPage,
   PasswordForgotten,
 };
+
 
