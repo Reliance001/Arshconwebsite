@@ -395,6 +395,6 @@ module.exports = {
   newProjectPage,
   editProjectPage,
   LoginPage,
-  RegisterPage,
   PasswordForgotten,
 };
+
