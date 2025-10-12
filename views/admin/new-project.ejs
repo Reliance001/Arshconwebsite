@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <div class="form-container">
+      <header><%- include('../partials/nav') %></header>
+
+      <main>
+        <h2 class="form-title">Upload New Project</h2>
+
+        <form action="/admin/new_project" method="POST" enctype="multipart/form-data" class="project-form">
+          
+          <!-- Project Title -->
+          <div class="form-group">
+            <label for="title">Project Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Enter project title"
+              value="<%= typeof project !== 'undefined' && project ? project.title : '' %>"
+  required
+            />
+          </div>
+
+          <!-- Location -->
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder="Enter project location"
+              value="<%= typeof project !== 'undefined' && project ? project.location : '' %>"
+              required
+            />
+          </div>
+
+          <!-- Banner Image -->
+          <div class="form-group">
+            <label for="banner">Banner Image</label>
+            <input
+              type="file"
+              id="banner"
+              name="banner"
+              accept="image/*"
+              required
+            />
+          </div>
+
+          <!-- Gallery Images -->
+          <div class="form-group">
+            <label for="gallery">Gallery Images</label>
+            <input
+              type="file"
+              id="gallery"
+              name="gallery"
+              accept="image/*"
+              multiple
+              required
+            />
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label for="status">Project Status</label>
+            <select id="status" name="status" required>
+              <option disabled selected>Select status</option>
+              <option value="Ongoing" <%= typeof project !== 'undefined' && project?.status === 'Ongoing' ? 'selected' : '' %>>Ongoing</option>
+              <option value="Completed" <%= typeof project !== 'undefined' && project?.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+              <option value="Upcoming" <%= typeof project !== 'undefined' && project?.status === 'Upcoming' ? 'selected' : '' %>>Upcoming</option>
+            </select>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option disabled selected>Select category</option>
+              <option value="Residential" <%= typeof project !== 'undefined' && project?.category === 'Residential' ? 'selected' : '' %>>Residential</option>
+              <option value="Commercial" <%= typeof project !== 'undefined' && project?.category === 'Commercial' ? 'selected' : '' %>>Commercial</option>
+              <option value="Industrial" <%= typeof project !== 'undefined' && project?.category === 'Industrial' ? 'selected' : '' %>>Industrial</option>
+              <option value="Educational" <%= typeof project !== 'undefined' && project?.category === 'Educational' ? 'selected' : '' %>>Educational</option>
+            </select>
+          </div>
+
+          <!-- Completion Date -->
+          <div class="form-group">
+            <label for="completion-date">Completion Date</label>
+            <input
+              type="date"
+              id="completion-date"
+              name="completionDate"
+              value="<%= typeof project !== 'undefined' && project ? project.completionDate : '' %>"
+              required
+            />
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="description">Project Description</label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Enter project description"
+              rows="4"
+              required
+            ><%= typeof project !== 'undefined' && project ? project.description : '' %></textarea>
+          </div>
+
+          <!-- Author -->
+          <div class="form-group">
+            <label for="author">Author</label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              placeholder="Enter project author"
+              value="<%=typeof project !== 'undefined' && project ? project.author : '' %>"
+              required
+            />
+          </div>
+
+          <!-- Testimonial -->
+          <div class="form-group">
+            <label for="review">Testimonial</label>
+            <input
+              type="text"
+              id="review"
+              name="review"
+              placeholder="Enter testimonial"
+              value="<%= typeof project !== 'undefined' && project ? project.review : '' %>"
+            />
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-submit">Save Project</button>
+        </form>
+      </main>
+
+      <!------------------ Footer Section ---------------------->
+      <%- include('../partials/footer') %>
+    </div>
+  </body>
+</html>

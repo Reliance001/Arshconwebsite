@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <header><%- include('../partials/nav') %></header>
+    <div class="container">
+      <h2>Admin Login</h2>
+      <form id="admin-login-form">
+        <input type="text" id="username" placeholder="Username" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <p id="error-msg" style="color: red"></p>
+      </form>
+    </div>
+    <%- include('../partials/footer') %>;
+    <script>
+      document
+        .getElementById("admin-login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          if (username === "admin" && password === "12345") {
+            localStorage.setItem("isAdmin", "true");
+            window.location.href = "admin";
+          } else {
+            document.getElementById("error-msg").textContent =
+              "Invalid credentials";
+          }
+        });
+    </script>
+  </body>
+</html>

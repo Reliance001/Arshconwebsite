@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <div class="container">
+      <header><%- include('./partials/nav.ejs') %></header>
+      <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="bg bg1"></div>
+          <div class="bg bg2"></div>
+          <div class="bg bg3"></div>
+          <h1 class="hero-text" id="typed"></h1>
+        </section>
+
+        <!-- Introduction -->
+        <section class="introduction">
+          <div class="container">
+            <h1 class="heading">Brief Introduction</h1>
+            <div class="text-container">
+              <h3 class="intro-text">
+                Welcome to
+                <span class="highlight">Arshcon & Form Limited</span> – where
+                innovation meets excellence in construction. With a commitment
+                to quality, precision, and durability, we specialize in
+                delivering top-tier residential, commercial, and industrial
+                projects. <br /><br />
+                Our expertise spans from groundbreaking designs to flawless
+                execution, ensuring that every structure we build stands the
+                test of time. At
+                <span class="highlight">Arshcon & Form Limited</span>, we don’t
+                just construct buildings—we create lasting legacies.
+                <br /><br />
+                **Let’s build something great together.**
+              </h3>
+            </div>
+            <hr />
+          </div>
+        </section>
+
+        <!-- Services -->
+        <section class="ourServices">
+          <div class="container">
+            <h1 class="serviceTitle">Our Services</h1>
+            <div class="servicesGrid">
+              <% services.forEach(service => { %>
+              <div class="serviceItem">
+                <div class="icon-container">
+                  <img
+                    src="/Images/<%= service.icon %>"
+                    alt="<%= service.name %> Icon"
+                    class="serviceIcon"
+                  />
+                </div>
+                <h3 class="service-name"><%= service.name %></h3>
+                <p><%= service.desc %></p>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+        </section>
+
+        <!-- Projects -->
+        <section class="feature-project">
+          <div class="container">
+            <h1 class="title">Featured Projects</h1>
+            <div class="projectsGrid">
+              <% projects.forEach((project, index) => { %>
+              <div
+                class="projectCard"
+                data-aos="fade-up"
+                data-aos-delay="<%= index * 200 %>"
+              >
+                <div class="projectImage">
+                  <img
+                    src="/Images/<%= project.img %>"
+                    alt="<%= project.title %>"
+                    onclick="openLightbox(this)"
+                  />
+                </div>
+                <div class="projectContent">
+                  <h2 class="project-name"><%= project.title %></h2>
+                  <p class="description"><%= project.desc %></p>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+        </section>
+
+        <!-- Lightbox -->
+        <div id="lightbox" class="lightbox">
+          <span class="close-btn" onclick="closeLightbox()">&times;</span>
+          <img class="lightbox-content" id="lightboxImg" />
+        </div>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+          <div class="container">
+            <h1 class="section-title">What Our Clients Say</h1>
+            <div class="testimonial-slider">
+              <% testimonials.forEach((t, index) => { %>
+              <div class="testimonial-card <%= index === 0 ? 'active' : '' %>">
+                <p class="testimonial-text">"<%= t.text %>"</p>
+                <h3 class="client-name"><%= t.name %></h3>
+              </div>
+              <% }) %>
+            </div>
+            <div class="slider-controls">
+              <button class="prev-btn">&#10094;</button>
+              <button class="next-btn">&#10095;</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <%- include('./partials/footer.ejs') %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <div class="project-container">
+      <header><%- include('./partials/nav.ejs') %></header>
+
+      <main class="container">
+        <h1 class="section-title">Our Projects</h1>
+        <p class="section-subtitle">
+          Explore our completed and ongoing projects.
+        </p>
+        <div class="project-grid">
+          <% if (projects && projects.length > 0) { %> <%
+          projects.forEach(project => { %>
+          <div class="property-card">
+            <div class="project-image">
+              <img src="/uploads/<%= project.banner %>" alt="<%= project.title %>" />
+            </div>
+            <div class="project-info">
+              <h3><%= project.title %></h3>
+              <p>
+                <%= project.description.length > 100 ?
+                project.description.slice(0, 100) + "..." : project.description
+                %>
+              </p>
+              <a href="/project/<%= project._id %>" class="project-btn"
+                >View Details</a>
+            </div>
+          </div>
+          <% }) %> <% } else { %>
+          <p>No projects available at the moment.</p>
+          <% } %>
+        </div>
+      </main>
+
+      <%- include('./partials/footer.ejs') %>
+    </div>
+  </body>
+</html>

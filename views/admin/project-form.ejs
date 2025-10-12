@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <div class="container py-5">
+      <header><%- include('../partials/nav') %></header>
+
+      <main class="mt-4">
+        <h2 class="mb-4 text-center"><%= formTitle %></h2>
+
+        <form 
+          action="<%= formAction %>" 
+          method="POST" 
+          enctype="multipart/form-data"
+          class="row g-4 shadow p-4 rounded bg-light"
+        >
+          <!-- Title -->
+          <div class="col-md-6">
+            <label class="form-label">Project Title</label>
+            <input type="text" name="title" value="<%= project.title || '' %>" class="form-control" required />
+          </div>
+
+          <!-- Location -->
+          <div class="col-md-6">
+            <label class="form-label">Location</label>
+            <input type="text" name="location" value="<%= project.location || '' %>" class="form-control" required />
+          </div>
+
+          <!-- Banner -->
+          <div class="col-12">
+            <label class="form-label">Banner Image</label>
+            <% if (project.banner) { %>
+              <div class="mb-2">
+                <img src="/uploads/<%= project.banner %>" alt="Banner" class="img-thumbnail" style="width:150px;" />
+              </div>
+            <% } %>
+            <input type="file" name="banner" accept="image/*" class="form-control" />
+          </div>
+
+          <!-- Status -->
+          <div class="col-md-6">
+            <label class="form-label">Project Status</label>
+            <select name="status" class="form-select" required>
+              <option value="Ongoing" <%= project.status==='Ongoing'?'selected':'' %>>Ongoing</option>
+              <option value="Completed" <%= project.status==='Completed'?'selected':'' %>>Completed</option>
+              <option value="Upcoming" <%= project.status==='Upcoming'?'selected':'' %>>Upcoming</option>
+            </select>
+          </div>
+
+          <!-- Category -->
+          <div class="col-md-6">
+            <label class="form-label">Category</label>
+            <select name="category" class="form-select" required>
+              <option value="Residential" <%= project.category==='Residential'?'selected':'' %>>Residential</option>
+              <option value="Commercial" <%= project.category==='Commercial'?'selected':'' %>>Commercial</option>
+              <option value="Industrial" <%= project.category==='Industrial'?'selected':'' %>>Industrial</option>
+              <option value="Educational" <%= project.category==='Educational'?'selected':'' %>>Educational</option>
+            </select>
+          </div>
+
+          <!-- Completion Date -->
+          <div class="col-md-6">
+            <label class="form-label">Completion Date</label>
+            <input type="date" name="completionDate"
+              value="<%= project.completionDate ? project.completionDate.toISOString().split('T')[0] : '' %>"
+              class="form-control" required />
+          </div>
+
+          <!-- Author -->
+          <div class="col-md-6">
+            <label class="form-label">Author</label>
+            <input type="text" name="author" value="<%= project.author || '' %>" class="form-control" required />
+          </div>
+
+          <!-- Description -->
+          <div class="col-12">
+            <label class="form-label">Project Description</label>
+            <textarea name="description" rows="4" class="form-control" required><%= project.description || '' %></textarea>
+          </div>
+
+          <!-- Construction Stages -->
+          <div class="col-12">
+            <h4 class="mt-3">Construction Stages</h4>
+            <% const stageNames = ["landClearing", "foundation", "blockwork", "roofing", "finishing", "livingRoom", "kitchen", "toilet"]; %>
+            <% stageNames.forEach(stage => { %>
+              <div class="border rounded p-3 mb-3 bg-white">
+                <h5 class="text-capitalize"><%= stage.replace(/([A-Z])/g, ' $1') %></h5>
+
+                <!-- Existing Images -->
+                <% if (project.stages && project.stages[stage] && project.stages[stage].length) { %>
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    <% project.stages[stage].forEach(img => { %>
+                      <img src="/uploads/<%= img %>" alt="<%= stage %> image" class="img-thumbnail" style="width:120px;" />
+                    <% }) %>
+                  </div>
+                <% } %>
+
+                <!-- Upload New Images -->
+                <label class="form-label">Upload Images</label>
+                <input type="file" name="stages[<%= stage %>][images]" multiple accept="image/*" class="form-control mb-2" />
+
+                <!-- Stage Description -->
+                <label class="form-label">Description</label>
+                <textarea name="stages[<%= stage %>][text]" rows="2" class="form-control"><%= project[stage]?.text || '' %></textarea>
+              </div>
+            <% }) %>
+          </div>
+
+          <!-- Testimonial -->
+          <div class="col-md-6">
+            <label class="form-label">Testimonial Text</label>
+            <input type="text" name="testimonial[text]" value="<%= project.testimonial?.text || '' %>" class="form-control" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Testimonial Author</label>
+            <input type="text" name="testimonial[author]" value="<%= project.testimonial?.author || '' %>" class="form-control" />
+          </div>
+
+          <!-- Submit -->
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary px-5"><%= buttonText %></button>
+          </div>
+        </form>
+      </main>
+
+      <%- include('../partials/footer') %>
+    </div>
+  </body>
+</html>
