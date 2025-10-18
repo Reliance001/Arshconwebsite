@@ -364,7 +364,7 @@ header {
   text-align: center;
 }
 
-.container {
+.main_container {
   max-width: 1100px;
   margin: auto;
 }
@@ -1748,3 +1748,4 @@ textarea {
 .auth-links a:hover {
   text-decoration: underline;
 }
+
