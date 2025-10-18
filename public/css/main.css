@@ -1462,6 +1462,9 @@ header {
 .contact-content {
   display: flex;
   justify-content: space-between;
+  align-items:center;
+  max-width: 1200px;
+  margin: auto;
   flex-wrap: wrap;
   gap: 30px;
 }
@@ -1750,5 +1753,6 @@ textarea {
 .auth-links a:hover {
   text-decoration: underline;
 }
+
 
 
