@@ -1,26 +1,7 @@
 const express = require("express");
-const multer = require("multer");
 const router = express.Router();
 const protect = require("../middleware/authMiddleware");
-
-// Multer config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // save to uploads folder
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); // unique file names
-  },
-});
-
-// File filter (optional - only images)
-const fileFilter = (req, file, cb) => {
-  const allowed = /jpeg|jpg|png|gif/;
-  const ext = path.extname(file.originalname).toLowerCase();
-  cb(null, allowed.test(ext));
-};
-
-const upload = multer({ storage });
+const upload = require("../middleware/cloudinaryUpload");
 
 // Import controllers
 const {
@@ -56,6 +37,7 @@ router.get("/project/:id", getProjectById);
 router.get("/admin/dashboard", protect, AdminPage);
 router.get("/admin/edit-project/:id", protect, editProjectPage);
 router.get("/admin/new_project", protect, newProjectPage);
+
 router.put(
   "/admin/projects/:id",
   protect,
@@ -73,7 +55,6 @@ router.put(
   updateProject
 );
 
-// Handle project creation (form submission)
 router.post(
   "/admin/projects",
   protect,
@@ -91,7 +72,7 @@ router.post(
   createProject
 );
 
-// Update + Delete (RESTful)
+// Delete route
 router.post("/admin/projects/:id/delete", protect, deleteProject);
 
 module.exports = router;
