@@ -1,6 +1,7 @@
 const Project = require("../models/ProjectModel");
 const User = require("../models/UserModel");
 
+// 🏠 Home Page
 const HomePage = (req, res) => {
   const services = [
     {
@@ -71,25 +72,25 @@ const HomePage = (req, res) => {
   res.render("index", { services, projects, testimonials });
 };
 
-//About page controller
+// 📄 About Page
 const AboutPage = (req, res) => {
   res.render("about", { title: "Arshcon & Form | About" });
 };
 
-//Service page controller
+// 🧱 Services Page
 const ServicePage = (req, res) => {
   res.render("services", { title: "Arshcon & Form | Services" });
 };
 
-// Admin page controller
+// 👨‍💼 Admin Dashboard
 const AdminPage = async (req, res) => {
   try {
     const admin = await User.findById(req.user._id).lean();
     const projects = await Project.find();
 
-    res.render("admin/dashBoard", {
+    res.render("admin/dashboard", {
       title: "Arshcon & Form | Admin Dashboard",
-      admin, // pass the logged-in admin
+      admin,
       projects,
     });
   } catch (err) {
@@ -98,29 +99,28 @@ const AdminPage = async (req, res) => {
   }
 };
 
-//New Project Page Route
-
+// ➕ New Project Page
 const newProjectPage = (req, res) => {
   res.render("admin/project-form", {
     project: {},
     formTitle: "➕ Create New Project",
-    formAction: "/admin/projects", // POST route
+    formAction: "/admin/projects",
     buttonText: "Create Project",
     title: "Create New Project",
   });
 };
 
-//Login Page Controller
+// 🔐 Login Page
 const LoginPage = (req, res) => {
   res.render("login", { title: "Arshcon & Form | Login" });
 };
 
-//Forgot-Password Page Controller
+// 🔑 Forgot Password Page
 const PasswordForgotten = (req, res) => {
   res.render("forgot-password", { title: "Arshcon & Form | Forgot-Password" });
 };
 
-//Get all Projects
+// 📦 Get All Projects
 const getAllProjects = async (req, res) => {
   try {
     const projects = await Project.find();
@@ -130,8 +130,7 @@ const getAllProjects = async (req, res) => {
   }
 };
 
-//Get single Project by Id
-
+// 🔍 Get Single Project
 const getProjectById = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -144,34 +143,23 @@ const getProjectById = async (req, res) => {
   }
 };
 
-// Create Project
+// 🆕 Create Project (Cloudinary-ready)
 const createProject = async (req, res) => {
   try {
     const formData = req.body || {};
 
-    // Validate required field
     if (!formData.title || !formData.title.trim()) {
       return res.status(400).send("Title is required");
     }
 
-    // Banner (multer.fields will put it at req.files.banner as an array)
-    const banner = req.files?.banner ? req.files.banner[0].filename : null;
+    // ✅ Use Cloudinary URLs instead of local filenames
+    const banner = req.files?.banner ? req.files.banner[0].path : null;
 
-    // Helper: get testimonial whether parsed as nested object or bracket-name string
-    const testimonial = (function () {
-      if (formData.testimonial && typeof formData.testimonial === "object") {
-        return {
-          text: formData.testimonial.text || "",
-          author: formData.testimonial.author || "",
-        };
-      }
-      return {
-        text: formData["testimonial[text]"] || "",
-        author: formData["testimonial[author]"] || "",
-      };
-    })();
+    const testimonial = {
+      text: formData["testimonial[text]"] || "",
+      author: formData["testimonial[author]"] || "",
+    };
 
-    // Build stages
     const stageNames = [
       "landClearing",
       "foundation",
@@ -185,35 +173,19 @@ const createProject = async (req, res) => {
 
     const stages = {};
     stageNames.forEach((stage) => {
-      // files key must match the form input name exactly:
       const filesKey = `stages[${stage}][images]`;
-
-      // images array from multer if any
       const images =
         req.files && req.files[filesKey]
-          ? req.files[filesKey].map((f) => f.filename)
+          ? req.files[filesKey].map((f) => f.path) // ✅ Cloudinary URLs
           : [];
 
-      // text — handle either nested object or bracket string
-      let text = "";
-      if (
-        formData.stages &&
-        typeof formData.stages === "object" &&
-        formData.stages[stage]
-      ) {
-        // case when body parsed to nested object: req.body.stages = { landClearing: { text: "..."} }
-        text = formData.stages[stage].text || "";
-      } else {
-        text = formData[`stages[${stage}][text]`] || "";
-      }
+      const text =
+        formData[`stages[${stage}][text]`] ||
+        (formData.stages?.[stage]?.text ?? "");
 
-      stages[stage] = {
-        text,
-        images,
-      };
+      stages[stage] = { text, images };
     });
 
-    // Create project object
     const newProject = new Project({
       title: formData.title.trim(),
       location: formData.location || "",
@@ -230,16 +202,14 @@ const createProject = async (req, res) => {
     });
 
     await newProject.save();
-
-    // Redirect to list or show page
-    return res.redirect("/projects");
+    res.redirect("/projects");
   } catch (err) {
     console.error("createProject error:", err);
-    return res.status(500).send(err.message || "Failed to create project");
+    res.status(500).send("Failed to create project");
   }
 };
 
-//Edit Project Page
+// ✏️ Edit Project Page
 const editProjectPage = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -248,7 +218,7 @@ const editProjectPage = async (req, res) => {
     res.render("admin/project-form", {
       project,
       formTitle: "✏️ Edit Project",
-      formAction: `/admin/projects/${project._id}?_method=PUT`, // PUT route
+      formAction: `/admin/projects/${project._id}?_method=PUT`,
       buttonText: "Update Project",
     });
   } catch (err) {
@@ -256,43 +226,24 @@ const editProjectPage = async (req, res) => {
   }
 };
 
-// Update Project
+// 🔁 Update Project (Cloudinary-ready)
 const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
     const formData = req.body || {};
-
-    if (!formData.title || !formData.title.trim()) {
-      return res.status(400).send("Title is required");
-    }
-
-    // Find existing project
     const project = await Project.findById(id);
-    if (!project) {
-      return res.status(404).send("Project not found");
-    }
+    if (!project) return res.status(404).send("Project not found");
 
-    // Banner update (keep old if none uploaded)
     const banner =
       req.files?.banner && req.files.banner[0]
-        ? req.files.banner[0].filename
+        ? req.files.banner[0].path // ✅ Cloudinary URL
         : project.banner;
 
-    // Testimonial update
-    const testimonial = (function () {
-      if (formData.testimonial && typeof formData.testimonial === "object") {
-        return {
-          text: formData.testimonial.text || "",
-          author: formData.testimonial.author || "",
-        };
-      }
-      return {
-        text: formData["testimonial[text]"] || "",
-        author: formData["testimonial[author]"] || "",
-      };
-    })();
+    const testimonial = {
+      text: formData["testimonial[text]"] || "",
+      author: formData["testimonial[author]"] || "",
+    };
 
-    // Build stages
     const stageNames = [
       "landClearing",
       "foundation",
@@ -307,80 +258,62 @@ const updateProject = async (req, res) => {
     const stages = {};
     stageNames.forEach((stage) => {
       const filesKey = `stages[${stage}][images]`;
-
-      // New uploaded images
       const newImages =
         req.files && req.files[filesKey]
-          ? req.files[filesKey].map((f) => f.filename)
+          ? req.files[filesKey].map((f) => f.path)
           : [];
+      const oldImages = project.stages[stage]?.images || [];
 
-      // Keep old images if no new uploads
-      const oldImages = project.stages[stage]?.images?.length
-        ? project.stages[stage].images
-        : [];
-
-      let text = "";
-      if (
-        formData.stages &&
-        typeof formData.stages === "object" &&
-        formData.stages[stage]
-      ) {
-        text = formData.stages[stage].text || "";
-      } else {
-        text = formData[`stages[${stage}][text]`] || "";
-      }
+      const text =
+        formData[`stages[${stage}][text]`] ||
+        (formData.stages?.[stage]?.text ?? "");
 
       stages[stage] = {
         text,
-        images: [...oldImages, ...newImages], // merge old + new
+        images: [...oldImages, ...newImages],
       };
     });
 
-    // Update project fields
-    project.title = formData.title.trim();
-    project.location = formData.location || "";
-    project.status = formData.status || "Ongoing";
-    project.category = formData.category || "Residential";
-    project.completionDate = formData.completionDate
-      ? new Date(formData.completionDate)
-      : null;
-    project.banner = banner;
-    project.author = formData.author || "";
-    project.description = formData.description || "";
-    project.testimonial = testimonial;
-    project.stages = stages;
+    Object.assign(project, {
+      title: formData.title.trim(),
+      location: formData.location || "",
+      status: formData.status || "Ongoing",
+      category: formData.category || "Residential",
+      completionDate: formData.completionDate
+        ? new Date(formData.completionDate)
+        : null,
+      banner,
+      author: formData.author || "",
+      description: formData.description || "",
+      testimonial,
+      stages,
+    });
 
     await project.save();
-
-    return res.redirect("/projects");
+    res.redirect("/projects");
   } catch (err) {
     console.error("updateProject error:", err);
-    return res.status(500).send(err.message || "Failed to update project");
+    res.status(500).send("Failed to update project");
   }
 };
 
-//Delete Project
-
+// 🗑️ Delete Project
 const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const project = await Project.findByIdAndDelete(id);
-    if (!project) {
-      return res.status(404).send("Project not found");
-    }
-
-    return res.redirect("/projects");
+    await Project.findByIdAndDelete(id);
+    res.redirect("/projects");
   } catch (err) {
     console.error("deleteProject error:", err);
-    return res.status(500).send(err.message || "Failed to delete project");
+    res.status(500).send("Failed to delete project");
   }
 };
 
-//Contact page controller
+// 📞 Contact Page
 const ContactPage = (req, res) => {
   res.render("contact", { title: "Arshcon & Form | Contact Page" });
 };
+
 module.exports = {
   HomePage,
   AboutPage,
@@ -397,5 +330,3 @@ module.exports = {
   LoginPage,
   PasswordForgotten,
 };
-
-
