@@ -22,7 +22,7 @@ app.use(methodOverride('_method'));
 
 app.set("view engine", "ejs");
 
-app.use("/api", pageRoutes);
+app.use("/", pageRoutes);
 app.use("/api", authRoutes);
 app.use("/api", projectRoutes);
 
