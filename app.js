@@ -36,5 +36,5 @@ app.use((err, req, res, next) => {
 connectDB();
 
 app.listen(PORT, () => {
-  console.log(`Server listening on Port: http://localhost:${PORT}/`);
+  console.log(`Server is running on port ${PORT}`);
 });
