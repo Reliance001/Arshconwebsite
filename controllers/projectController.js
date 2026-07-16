@@ -42,7 +42,7 @@ const createProject = async (req, res) => {
         author: body.testimonial?.author || "",
       },
     });
-    res.redirect("/api/dashBoard");
+    res.redirect("/dashBoard");
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -137,7 +137,7 @@ const updateProject = async (req, res) => {
       { new: true, runValidators: true },
     );
 
-    res.redirect("/api/dashBoard");
+    res.redirect("/dashboard");
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -161,7 +161,7 @@ const deleteProject = async (req, res) => {
     await deleteManyFromCloudinary(imagesToDelete);
 
     await project.deleteOne();
-    res.redirect("/api/dashBoard");
+    res.redirect("/dashboard");
     res
       .status(200)
       .json({ success: true, message: "Project deleted", data: {} });
