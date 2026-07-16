@@ -231,7 +231,7 @@ exports.createProject = async (req, res) => {
 
     await project.save();
 
-    res.redirect("/api/dashBoard");
+    res.redirect("/dashboard");
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
@@ -264,7 +264,7 @@ exports.deleteProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
 
-    if (!project) return res.redirect("/api/dashBoard");
+    if (!project) return res.redirect("/dashboard");
 
     // delete banner
     if (project.banner?.public_id) {
@@ -285,7 +285,7 @@ exports.deleteProject = async (req, res) => {
 
     await Project.findByIdAndDelete(req.params.id);
 
-    res.redirect("/api/dashBoard");
+    res.redirect("/dashboard");
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
