@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
     req.session.adminId = admin._id;
     req.session.isAuthenticated = true;
 
-    res.redirect("/api/dashboard");
+    res.redirect("/dashboard");
   } catch (error) {
     res.status(500).json({
       error: error.message,
