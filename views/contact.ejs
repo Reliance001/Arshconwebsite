@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("./partials/head") %>
+  <body>
+    <div class="container">
+      <header><%- include("./partials/nav") %></header>
+      <main>
+        <!-- contact Section Hero -->
+        <section class="contact-hero">
+          <div class="hero-overlay"></div>
+
+          <div class="container">
+            <div class="contact-hero-content">
+              <h1>
+                Let's Build Your
+                <span>Dream Project.</span>
+              </h1>
+
+              <p>
+                Whether you're planning a new home, renovation, or commercial
+                development, our experienced team is ready to guide you from
+                concept to completion.
+              </p>
+
+              <div class="contact-hero-content .hero-divider"></div>
+
+              <a href="#contactForm" class="scroll-btn">
+                Get In Touch ⇣
+
+                <i class="bi bi-arrow-down"></i>
+              </a>
+            </div>
+          </div>
+        </section>
+        <!-- Main contact Section -->
+        <section class="contact">
+          <div class="container">
+            <div class="contact-content">
+              <!-- Contact Form -->
+              <div class="contact-form">
+                <form
+                  id="contactForm"
+                  action="https://formspree.io/f/mwplqnee"
+                  method="POST"
+                >
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Your Name"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Your Email"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="subject"
+                      placeholder="Subject"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <textarea
+                      name="message"
+                      placeholder="Your Message"
+                      rows="5"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="contact-btn">
+                    Send Message
+                  </button>
+                </form>
+                <p id="statusMessage" style="display: none; color: green">
+                  Message sent successfully!
+                </p>
+              </div>
+
+              <!-- Contact Details -->
+              <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p>
+                  <strong>📍 Address:</strong> 37, Alh. Babs Aregbe Street, Oﬀ
+                  Ayo Shonubi, Ago Palace Way, Lagos, Nigeria.
+                </p>
+                <p><strong>📞 Phone:</strong> +234 805 1075 146</p>
+                <p><strong>📧 Email:</strong> arshconnform@gmail.com</p>
+                <p>
+                  <strong>⏰ Office Hours:</strong> Mon - Fri, 9:00 AM - 6:00 PM
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer Section -->
+
+      <%- include("./partials/footer") %>
+    </div>
+  </body>
+</html>

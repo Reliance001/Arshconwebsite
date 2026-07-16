@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <div class="admin-container">
+      <!-- ✅ NAV -->
+      <header><%- include('../partials/nav') %></header>
+
+      <div class="container-fluid px-3 px-md-4 py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="admin-text-heading mb-0">Admin Dashboard</h2>
+          <a href="/api/createProject/new" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Project
+          </a>
+        </div>
+
+        <!-- 📊 STATS CARDS (Optional Enhancement) -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <h6 class="text-muted mb-2">Total Projects</h6>
+                <h3 class="mb-0"><%= projects ? projects.length : 0 %></h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <h6 class="text-muted mb-2">Active Projects</h6>
+                <h3 class="mb-0">
+                  <%= projects ? projects.filter(p => p.status === 'Active' || p.status === 'In Progress').length : 0 %>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <h6 class="text-muted mb-2">Completed</h6>
+                <h3 class="mb-0">
+                  <%= projects ? projects.filter(p => p.status === 'Completed').length : 0 %>
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <h6 class="text-muted mb-2">Categories</h6>
+                <h3 class="mb-0">
+                  <%= projects ? new Set(projects.map(p => p.category)).size : 0 %>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📂 ALL PROJECTS SECTION -->
+        <div class="admin-section card border-0 shadow-sm mb-4" id="project-list-section">
+          <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h3 class="mb-0">📂 All Projects</h3>
+              <!-- Search/Filter Bar -->
+              <div class="input-group" style="max-width: 300px;">
+                <input 
+                  type="text" 
+                  id="searchProjects" 
+                  class="form-control form-control-sm" 
+                  placeholder="Search projects..."
+                  aria-label="Search projects"
+                >
+                <button class="btn btn-outline-secondary btn-sm" type="button">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <% if (projects && projects.length > 0) { %>
+            
+            <!-- Desktop Table View -->
+            <div class="table-responsive d-none d-lg-block">
+              <table id="project-list" class="table table-hover mb-0">
+                <thead class="table-light sticky-top">
+                  <tr>
+                    <th style="width: 100px;">Banner</th>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Completion</th>
+                    <th>Category</th>
+                    <th style="max-width: 250px;">Description</th>
+                    <th>Stages</th>
+                    <th>Testimonial</th>
+                    <th style="width: 160px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% projects.forEach(project => { %>
+                  <tr data-project-id="<%= project._id %>">
+                    <td>
+                      <% if (project.banner) { %>
+                      <img
+                        src="<%= project.banner.url %>"
+                        alt="<%= project.title %> banner"
+                        class="img-thumbnail"
+                        style="width: 80px; height: 60px; object-fit: cover;"
+                        loading="lazy"
+                      />
+                      <% } else { %>
+                      <div class="bg-light d-flex align-items-center justify-content-center" 
+                           style="width: 80px; height: 60px; border-radius: 4px;">
+                        <small class="text-muted">No image</small>
+                      </div>
+                      <% } %>
+                    </td>
+                    <td>
+                      <strong><%= project.title %></strong>
+                    </td>
+                    <td><%= project.location %></td>
+                    <td>
+                      <% 
+                        let statusClass = 'secondary';
+                        if (project.status === 'Completed') statusClass = 'success';
+                        else if (project.status === 'In Progress' || project.status === 'Active') statusClass = 'primary';
+                        else if (project.status === 'On Hold') statusClass = 'warning';
+                      %>
+                      <span class="badge bg-<%= statusClass %>"><%= project.status %></span>
+                    </td>
+                    <td>
+                      <small>
+                        <%= project.completionDate ? new Date(project.completionDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "N/A" %>
+                      </small>
+                    </td>
+                    <td>
+                      <span class="badge bg-info text-dark"><%= project.category %></span>
+                    </td>
+                    <td style="max-width: 250px;">
+                      <div class="text-truncate" title="<%= project.description %>">
+                        <%- project.location %>
+                      </div>
+                    </td>
+                    <td>
+                      <% if (project.stages && Object.keys(project.stages).length > 0) { %>
+                      <small>
+                        <%= Object.keys(project.stages).length %> stage(s)<br>
+                        <% 
+                          const totalImages = Object.values(project.stages)
+                            .reduce((sum, stage) => sum + (stage?.images?.length || 0), 0);
+                        %>
+                        <%= totalImages %> image(s)
+                      </small>
+                      <% } else { %>
+                      <small class="text-muted">None</small>
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if (project.testimonial && project.testimonial.text) { %>
+                      <small>
+                        <i class="bi bi-quote text-muted"></i>
+                        <span class="text-muted">— <%= project.testimonial.author %></span>
+                      </small>
+                      <% } else { %>
+                      <small class="text-muted">None</small>
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a
+                          class="btn btn-sm btn-outline-primary"
+                          href="/api/project/update/<%= project._id %>"
+                          title="Edit project"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </a>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-danger delete-project-btn"
+                          data-project-id="<%= project._id %>"
+                          data-project-title="<%= project.title %>"
+                          title="Delete project"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="d-lg-none">
+              <% projects.forEach(project => { %>
+              <div class="card mb-3 mx-3 shadow-sm border" data-project-id="<%= project._id %>">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="flex-grow-1">
+                      <h5 class="card-title mb-1"><%= project.title %></h5>
+                      <p class="text-muted mb-2 small">
+                        <i class="bi bi-geo-alt"></i> <%= project.location %>
+                      </p>
+                    </div>
+                    <% if (project.banner) { %>
+                    <img
+                      src="<%= project.banner.url %>"
+                      alt="<%= project.title %> banner"
+                      class="img-thumbnail ms-2"
+                      style="width: 80px; height: 60px; object-fit: cover;"
+                      loading="lazy"
+                    />
+                    <% } %>
+                  </div>
+
+                  <div class="mb-3">
+                    <% 
+                      let statusClass = 'secondary';
+                      if (project.status === 'Completed') statusClass = 'success';
+                      else if (project.status === 'In Progress' || project.status === 'Active') statusClass = 'primary';
+                      else if (project.status === 'On Hold') statusClass = 'warning';
+                    %>
+                    <span class="badge bg-<%= statusClass %> me-2"><%= project.status %></span>
+                    <span class="badge bg-info text-dark"><%= project.category %></span>
+                  </div>
+
+                  <p class="card-text small text-truncate mb-2">
+                    <%- project.location %>
+                  </p>
+
+                  <div class="small text-muted mb-3">
+                    <div><strong>Completion:</strong> 
+                      <%= project.completionDate ? new Date(project.completionDate).toLocaleDateString() : "N/A" %>
+                    </div>
+                    <% if (project.stages && Object.keys(project.stages).length > 0) { %>
+                    <div><strong>Stages:</strong> <%= Object.keys(project.stages).length %></div>
+                    <% } %>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <a
+                      class="btn btn-sm btn-outline-primary flex-grow-1"
+                      href="/api/project/update/<%= project._id %>"
+                    >
+                      <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-danger delete-project-btn"
+                      data-project-id="<%= project._id %>"
+                      data-project-title="<%= project.title %>"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+
+            <% } else { %>
+            <div class="text-center py-5">
+              <i class="bi bi-folder2-open text-muted" style="font-size: 3rem;"></i>
+              <p class="text-muted mt-3">No projects found. Get started by adding your first project!</p>
+              <a href="/api/project/create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add New Project
+              </a>
+            </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- 👤 ADMIN INFO SECTION -->
+        <div class="admin-section card border-0 shadow-sm" id="admin-info-section">
+          <div class="card-header bg-white py-3">
+            <h3 class="mb-0">👤 Admin Information</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-8">
+                <dl class="row mb-0">
+                  <dt class="col-sm-4">Full Name:</dt>
+                  <dd class="col-sm-8"><%= admin.name %></dd>
+                  
+                  <dt class="col-sm-4">Email:</dt>
+                  <dd class="col-sm-8"><%= admin.email %></dd>
+                  
+                  <dt class="col-sm-4">Role:</dt>
+                  <dd class="col-sm-8">
+                    <span class="badge bg-dark"><%= admin.role || 'Administrator' %></span>
+                  </dd>
+                </dl>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex flex-column gap-2">
+                  <a href="/api/admin/update" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Update Info
+                  </a>
+                  <form action="/api/logout" method="post">
+                    <button type="submit" class="btn btn-danger w-100">
+                      <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ FOOTER -->
+      <footer><%- include('../partials/footer') %></footer>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title" id="deleteModalLabel">
+              <i class="bi bi-exclamation-triangle text-danger"></i> Confirm Deletion
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete the project:</p>
+            <p class="fw-bold text-center" id="deleteProjectTitle"></p>
+            <p class="text-danger small">This action cannot be undone.</p>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Delete Project
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript for Enhanced Functionality -->
+    <script>
+      // Search functionality
+      document.getElementById('searchProjects')?.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#project-list tbody tr, [data-project-id]');
+        
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+      });
+
+      // Delete modal functionality
+      const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      const deleteForm = document.getElementById('deleteForm');
+      const deleteProjectTitle = document.getElementById('deleteProjectTitle');
+
+      document.querySelectorAll('.delete-project-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const projectId = this.dataset.projectId;
+          const projectTitle = this.dataset.projectTitle;
+          
+          deleteProjectTitle.textContent = projectTitle;
+          deleteForm.action = `/api/project/delete/${projectId}?_method=DELETE`;
+          
+          deleteModal.show();
+        });
+      });
+
+      // Add loading state to forms
+      document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+          const submitBtn = this.querySelector('button[type="submit"]');
+          if (submitBtn && !submitBtn.disabled) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+          }
+        });
+      });
+
+      // Toast notifications (if you have a notification system)
+      <% if (typeof success !== 'undefined' && success) { %>
+        // Show success toast
+        console.log('Success: <%= success %>');
+      <% } %>
+          
+      <% if (typeof error !== 'undefined' && error) { %>
+        // Show error toast
+        console.error('Error: <%= error %>');
+      <% } %>
+    </script>
+
+    <style>
+      /* Custom styles for improved UX */
+      .admin-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .admin-container > .container-fluid {
+        flex: 1;
+      }
+
+      .sticky-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .table-hover tbody tr:hover {
+        background-color: rgba(0, 123, 255, 0.05);
+        cursor: pointer;
+      }
+
+      .text-truncate {
+        max-width: 250px;
+      }
+
+      /* Smooth transitions */
+      .btn, .badge, .card {
+        transition: all 0.2s ease-in-out;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .card:hover {
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+      }
+
+      /* Responsive table improvements */
+      @media (max-width: 991px) {
+        .card-body {
+          padding: 1rem;
+        }
+      }
+
+      /* Loading spinner */
+      .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+        border-width: 0.15em;
+      }
+    </style>
+  </body>
+</html>

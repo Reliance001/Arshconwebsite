@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <%- include('../partials/head') %>
+
+  <body>
+    <div class="form-container">
+      <header>
+        <%- include('../partials/nav') %>
+      </header>
+
+  <main>
+    <h2 class="form-title"><%= title %></h2>
+
+    <form
+      action="<%= formAction %>"
+      method="POST"
+      enctype="multipart/form-data"
+      class="project-form"
+    >
+
+      <!-- Title -->
+      <div class="form-group">
+        <label for="title">Project Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value="<%= project ? project.title : '' %>"
+          placeholder="Enter project title"
+          required
+        />
+      </div>
+
+      <!-- Location -->
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value="<%= project ? project.location : '' %>"
+          placeholder="Enter project location"
+          required
+        />
+      </div>
+
+      <!-- Banner -->
+      <div class="form-group">
+        <label for="banner">Banner Image</label>
+
+        <% if (project && project.banner && project.banner.url) { %>
+          <div class="mb-2">
+            <img
+              src="<%= project.banner.url %>"
+              alt="Banner"
+              class="img-thumbnail"
+              style="max-width: 200px;"
+            />
+          </div>
+        <% } %>
+
+        <input
+          type="file"
+          id="banner"
+          name="banner"
+          accept="image/*"
+        />
+      </div>
+
+      <!-- Gallery -->
+      <div class="form-group">
+        <label for="gallery">Gallery Images</label>
+
+        <% if (
+          project &&
+          project.gallery &&
+          project.gallery.length
+        ) { %>
+
+          <div
+            style="
+              display:flex;
+              flex-wrap:wrap;
+              gap:10px;
+              margin-bottom:10px;
+            "
+          >
+            <% project.gallery.forEach(image => { %>
+
+              <img
+                src="<%= image.url %>"
+                alt="Gallery Image"
+                class="img-thumbnail"
+                style="width:120px;"
+              />
+
+            <% }) %>
+          </div>
+
+        <% } %>
+
+        <input
+          type="file"
+          id="gallery"
+          name="gallery"
+          accept="image/*"
+          multiple
+        />
+      </div>
+
+      <!-- Status -->
+      <div class="form-group">
+        <label for="status">Project Status</label>
+
+        <select id="status" name="status" required>
+
+          <option value="Ongoing"
+            <%= project?.status === 'Ongoing' ? 'selected' : '' %>>
+            Ongoing
+          </option>
+
+          <option value="Completed"
+            <%= project?.status === 'Completed' ? 'selected' : '' %>>
+            Completed
+          </option>
+
+          <option value="Upcoming"
+            <%= project?.status === 'Upcoming' ? 'selected' : '' %>>
+            Upcoming
+          </option>
+
+        </select>
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="category">Category</label>
+
+        <select id="category" name="category" required>
+
+          <option value="Residential"
+            <%= project?.category === 'Residential' ? 'selected' : '' %>>
+            Residential
+          </option>
+
+          <option value="Commercial"
+            <%= project?.category === 'Commercial' ? 'selected' : '' %>>
+            Commercial
+          </option>
+
+          <option value="Industrial"
+            <%= project?.category === 'Industrial' ? 'selected' : '' %>>
+            Industrial
+          </option>
+
+          <option value="Educational"
+            <%= project?.category === 'Educational' ? 'selected' : '' %>>
+            Educational
+          </option>
+
+        </select>
+      </div>
+
+      <!-- Completion Date -->
+      <div class="form-group">
+        <label for="completionDate">Completion Date</label>
+
+        <input
+          type="date"
+          id="completionDate"
+          name="completionDate"
+          value="<%= project?.completionDate ? project.completionDate.toISOString().split('T')[0] : '' %>"
+          required
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Project Description</label>
+
+        <textarea
+          id="description"
+          name="description"
+          rows="5"
+          required
+        ><%= project ? project.description : '' %></textarea>
+      </div>
+
+      <!-- Testimonial -->
+      <div class="form-group">
+        <label>Testimonial</label>
+
+        <input
+          type="text"
+          name="testimonial[text]"
+          value="<%= project?.testimonial?.text || '' %>"
+          placeholder="Client testimonial"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Testimonial Author</label>
+
+        <input
+          type="text"
+          name="testimonial[author]"
+          value="<%= project?.testimonial?.author || '' %>"
+          placeholder="Client name"
+        />
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit">
+        <%= buttonText %>
+      </button>
+
+    </form>
+  </main>
+
+  <%- include('../partials/footer') %>
+</div>
+
+ <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
+ <script>
+ClassicEditor
+.create(document.querySelector('#description'), {
+  toolbar: [
+    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'
+  ]
+})
+.catch(error => console.error(error));
+</script>
+
+  </body>
+</html>
