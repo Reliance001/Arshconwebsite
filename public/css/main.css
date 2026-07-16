@@ -856,7 +856,7 @@ header {
 
 .about-hero-image {
   height: 650px;
-  background: url("/images/soluyi2.jpg") center/cover no-repeat;
+  background: url("/Images/soluyi2.jpg") center/cover no-repeat;
   border-radius: 80px 20px 80px 20px;
   position: relative;
   overflow: hidden;
@@ -1351,7 +1351,7 @@ header {
   display: flex;
   align-items: center;
   overflow: hidden;
-  background-image: url("/images/servicesimage.jpg");
+  background-image: url("/Images/servicesimage.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1892,7 +1892,7 @@ header {
   height: 500px;
   display: flex;
   align-items: center;
-  background: url("/images/contact-hero.jpg") center/cover;
+  background: url("/Images/contact-hero.jpg") center/cover;
 }
 
 .contact-hero:before {
