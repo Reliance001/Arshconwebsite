@@ -187,7 +187,6 @@
           id="description"
           name="description"
           rows="5"
-          required
         ><%= project ? project.description : '' %></textarea>
       </div>
 
@@ -225,17 +224,42 @@
   <%- include('../partials/footer') %>
 </div>
 
- <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 
- <script>
+<script>
+let editor;
+
 ClassicEditor
-.create(document.querySelector('#description'), {
-  toolbar: [
-    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'
-  ]
-})
-.catch(error => console.error(error));
+    .create(document.querySelector('#description'), {
+        toolbar: [
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            'blockQuote'
+        ]
+    })
+    .then(newEditor => {
+        editor = newEditor;
+    })
+    .catch(error => console.error(error));
+
+const form = document.querySelector('.project-form');
+
+form.addEventListener('submit', function (e) {
+    const data = editor.getData();
+
+    if (!data.trim()) {
+        e.preventDefault();
+        alert('Project description is required.');
+        return;
+    }
+
+    document.querySelector('#description').value = data;
+});
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
