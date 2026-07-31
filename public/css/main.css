@@ -57,6 +57,7 @@ header {
 .nav-lists {
   display: flex;
   gap: 20px;
+  list-style-type: none;
   margin: auto;
 }
 
