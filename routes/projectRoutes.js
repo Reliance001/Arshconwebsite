@@ -24,19 +24,19 @@ router.get("/project/:id",
 )
 
  router.post(
-  "/api/project/create",
+  "/project/create",
   isAuthenticated,
   upload.any(),
   createProject
 );
 
 router.post(
-    "/api/project/update/:id",
+    "/project/update/:id",
     isAuthenticated,
     upload.any(),
     updateProject
 )
 
-router.delete("/api/project/delete/:id", isAuthenticated, deleteProject);
+router.delete("/project/delete/:id", isAuthenticated, deleteProject);
 
 module.exports = router;
