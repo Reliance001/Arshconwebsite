@@ -181,6 +181,61 @@
 
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const gallery = [...document.querySelectorAll('.gallery-image')];
+const lightbox = document.querySelector('#lightbox');
+const lightboxImage = document.querySelector('#lightbox-image');
+const counter = document.querySelector('.image-counter');
+const thumbs = [...document.querySelectorAll('.thumb')];
+
+let current = 0;
+
+function showImage(index){
+current=index;
+lightboxImage.src=gallery[index].src;
+counter.textContent=`${index+1} / ${gallery.length}`;
+thumbs.forEach(t=>t.classList.remove('active'));
+thumbs[index].classList.add('active');
+}
+
+gallery.forEach((img,index)=>{
+img.addEventListener('click',()=>{
+lightbox.classList.add('active');
+showImage(index);
+});
+});
+
+document.querySelector('.close-btn').onclick=()=>{
+lightbox.classList.remove('active');
+}
+
+document.querySelector('.next-btn').onclick=()=>{
+showImage((current+1)%gallery.length);
+}
+
+document.querySelector('.prev-btn').onclick=()=>{
+showImage((current-1+gallery.length)%gallery.length);
+}
+thumbs.forEach((thumb,index)=>{
+thumb.onclick=()=>showImage(index);
+});
+
+document.addEventListener('keydown',(e)=>{
+if(!lightbox.classList.contains('active')) return;
+
+if(e.key==="ArrowRight"){
+showImage((current+1)%gallery.length);
+}
+
+if(e.key==="ArrowLeft"){
+showImage((current-1+gallery.length)%gallery.length);
+}
+
+if(e.key==="Escape"){
+lightbox.classList.remove('active');
+}
+});
+</script>
 
   </body>
 </html>
