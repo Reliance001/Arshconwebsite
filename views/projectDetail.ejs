@@ -182,6 +182,8 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
 const gallery = [...document.querySelectorAll('.gallery-image')];
 const lightbox = document.querySelector('#lightbox');
 const lightboxImage = document.querySelector('#lightbox-image');
@@ -234,6 +236,7 @@ showImage((current-1+gallery.length)%gallery.length);
 if(e.key==="Escape"){
 lightbox.classList.remove('active');
 }
+});
 });
 </script>
 
