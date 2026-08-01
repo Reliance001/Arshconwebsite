@@ -1999,6 +1999,7 @@ border-color:white;
 /* Contact Section */
 .contact-hero {
   position: relative;
+  padding: 0 10px;
   height: 500px;
   display: flex;
   align-items: center;
@@ -2070,7 +2071,7 @@ border-color:white;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   flex: 1;
-  min-width: 350px;
+  min-width: 330px;
 }
 
 .form-group {
