@@ -1702,10 +1702,14 @@ header {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Project Details */
+/* Project Details Style */
 .project-details h2,
 .project-details h3 {
   color: #c00;
+}
+
+.project-details {
+  padding: 0 10px;
 }
 
 .project-details p {
