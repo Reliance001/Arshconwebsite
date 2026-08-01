@@ -202,6 +202,7 @@ thumbs[index].classList.add('active');
 
 gallery.forEach((img,index)=>{
 img.addEventListener('click',()=>{
+ console.log("clicked", index);
 lightbox.classList.add('active');
 showImage(index);
 });
