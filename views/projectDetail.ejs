@@ -184,7 +184,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-const gallery = [...document.querySelectorAll('.gallery-image')];
+const items = document.querySelectorAll(".gallery-item");
 const lightbox = document.querySelector('#lightbox');
 const lightboxImage = document.querySelector('#lightbox-image');
 const counter = document.querySelector('.image-counter');
@@ -200,12 +200,13 @@ thumbs.forEach(t=>t.classList.remove('active'));
 thumbs[index].classList.add('active');
 }
 
-gallery.forEach((img,index)=>{
-img.addEventListener('click',()=>{
- console.log("clicked", index);
-lightbox.classList.add('active');
-showImage(index);
-});
+
+items.forEach((item, index) => {
+    item.addEventListener("click", () => {
+        console.log("clicked", index);
+        lightbox.classList.add("active");
+        showImage(index);
+    });
 });
 
 document.querySelector('.close-btn').onclick=()=>{
