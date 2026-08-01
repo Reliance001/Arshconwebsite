@@ -42,7 +42,6 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
     completionDate: { type: Date, required: true },
-    author: { type: String, required: true, trim: true },
     description: { type: String, required: true },
     stages: { type: [stageSchema], default: [] },
     testimonial: { type: testimonialSchema, default: () => ({}) },
