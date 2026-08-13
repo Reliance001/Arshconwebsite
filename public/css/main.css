@@ -365,8 +365,8 @@ header {
 
 /* Service Icons */
 .serviceIcon {
-  width: 70px;
-  height: 70px;
+  width: auto;
+  height: auto;
   /* filter: invert(100%) brightness(200%); Makes icons white */
   transition: transform 0.3s ease-in-out;
 }
@@ -1467,8 +1467,8 @@ header {
 }
 
 .service-item img {
-  width: 80px;
-  height: 80px;
+  width: auto;
+  height: auto;
   margin-bottom: 15px;
 }
 
