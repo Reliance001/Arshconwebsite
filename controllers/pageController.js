@@ -13,7 +13,7 @@ exports.getHomePage = (req, res) => {
     
     {
       name: "Design Services",
-      icon: "design.jgp",
+      icon: "design.jpg",
       desc: "We provide comprehensive construction design services that transform your ideas into practical, functional, and visually appealing spaces. From architectural and structural designs to 3D visualization and detailed construction drawings, we deliver well-coordinated designs that support efficient construction, cost control, and quality results.",
     },
     {
