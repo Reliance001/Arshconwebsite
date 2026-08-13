@@ -327,42 +327,35 @@ header {
 .servicesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  width: 100%;
+  gap: 20px;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: auto;
 }
 
 .serviceItem {
-  background: rgba(2, 0, 0, 0.1);
-  padding: 30px;
+  background: white;
+  padding: 20px;
   border-radius: 10px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid transparent;
-  transition:
-    transform 0.3s ease-in-out,
-    background 0.3s,
-    box-shadow 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
 }
 
-.icon-container {
+/*.icon-container {
   width: 120px;
   height: 120px;
   margin: 0 auto 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
+}*/
 
 .serviceIcon {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  width:100%; 
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   display: block;
-  transition: transform 0.3s ease-in-out;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 15px;
 }
 
 .serviceItem:hover .serviceIcon {
