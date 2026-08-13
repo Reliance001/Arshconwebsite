@@ -368,15 +368,11 @@ header {
 
 /* Service Icons */
 .serviceIcon {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-  border-radius: 10px 10px 0 0;
-  /* filter: invert(100%) brightness(200%); Makes icons white */
-  transition: transform 0.3s ease-in-out;
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
 }
-
 /* Hover Effect on Icon */
 .serviceItem:hover .serviceIcon {
   transform: scale(1.2);
