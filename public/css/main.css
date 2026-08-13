@@ -365,8 +365,11 @@ header {
 
 /* Service Icons */
 .serviceIcon {
-  width: auto;
-  height: auto;
+  width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px 10px 0 0;
   /* filter: invert(100%) brightness(200%); Makes icons white */
   transition: transform 0.3s ease-in-out;
 }
@@ -1467,8 +1470,11 @@ header {
 }
 
 .service-item img {
-  width: auto;
-  height: auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px 10px 0 0;
   margin-bottom: 15px;
 }
 
