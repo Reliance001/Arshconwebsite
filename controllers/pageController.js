@@ -7,34 +7,20 @@ exports.getHomePage = (req, res) => {
   const services = [
     {
       name: "Construction",
-      icon: "construction.png",
-      desc: "Building durable structures that stand the test of time.",
-    },
+      icon: "construction.jpg",
+      desc: "We deliver quality construction services for residential, commercial, and mixed-use projects. From foundation to finishing, our team focuses on sound workmanship, quality materials, proper project coordination, and timely execution to create durable, functional, and visually appealing buildings.",
+    }, 
+    
     {
-      name: "Architectural Design",
-      icon: "architectural.png",
-      desc: "Innovative designs that blend aesthetics with functionality.",
-    },
-    {
-      name: "Structural Design",
-      icon: "drawing.png",
-      desc: "Strong, sustainable, and efficient engineering solutions.",
-    },
-    {
-      name: "Interior Design",
-      icon: "living-room.png",
-      desc: "Elegant interiors tailored to your unique style.",
+      name: "Design Services",
+      icon: "design.jgp",
+      desc: "We provide comprehensive construction design services that transform your ideas into practical, functional, and visually appealing spaces. From architectural and structural designs to 3D visualization and detailed construction drawings, we deliver well-coordinated designs that support efficient construction, cost control, and quality results.",
     },
     {
       name: "Real Estate",
-      icon: "rental.png",
-      desc: "Helping you find the perfect property investment.",
-    },
-    {
-      name: "Joint Venture",
-      icon: "handshake.png",
-      desc: "We can partner with you to develop a profitable property investment.",
-    },
+      icon: "real estate.jpg",
+      desc: "We provide reliable real estate services covering property sales, rentals, development, and investment opportunities. We help clients find suitable properties, make informed decisions, and achieve secure and rewarding real estate transactions.",
+    }
   ];
 
   const projects = [
@@ -60,7 +46,7 @@ exports.getHomePage = (req, res) => {
       text: " Arshcon & Form Limited is a top-notch construction company that delivers exceptional results. Their team is highly skilled, professional, and dedicated to ensuring client satisfaction. I am extremely impressed with their work and would highly recommend them to anyone in need of construction services.",
     },
     {
-      name: "- Alh., Taiwo Agbelekale",
+      name: "- Mr Abubakar Hussein",
       text: "Highly recommended! From start to finish, they delivered beyond what we imagined. A truly reliable construction company.",
     },
     {
@@ -68,7 +54,7 @@ exports.getHomePage = (req, res) => {
       text: "Arshcon & Form Limited exceeded my expectations! The quality of their work is outstanding, and their attention to detail is remarkable. I highly recommend their services to anyone looking for top-notch construction and design solutions.",
     },
     {
-      name: "- ALh., Mrs Agbelekale",
+      name: "- Alh., Sebiotimo Surajudeen",
       text: "Professionalism and excellence at its peak! Their team transformed our vision into reality with flawless execution.",
     },
   ];
