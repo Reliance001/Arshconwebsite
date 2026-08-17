@@ -11,34 +11,178 @@
           Explore our completed and ongoing projects.
         </p>
         <div class="project-grid">
-          <% if (projects && projects.length > 0) { %> <%
-          projects.forEach(project => { %>
-          <div class="property-card">
-            <div class="project-image">
-              <img
-                src="<%= project.banner?.url  %>"
-                alt="<%= project.title %>"
-              />
-            </div>
-            <div class="project-info">
-              <h3><%= project.title %></h3>
-              <p>
-                <%- project.location.length > 100 ?
-                project.location.slice(0, 100) + "..." : project.location
-                %>
-              </p>
-              <a href="/project/<%= project._id %>" class="project-btn"
-                >View Details</a
-              >
-            </div>
-          </div>
-          <% }) %> <% } else { %>
-          <p>No projects available at the moment.</p>
-          <% } %>
+  <% if (projects && projects.length > 0) { %>
+
+    <% projects.forEach(project => { %>
+
+      <div class="property-card project-card">
+
+        <!-- Main Project Image -->
+        <div class="project-image">
+          <img
+            class="project-main-image"
+            src="<%= project.banner?.url %>"
+            alt="<%= project.title %>"
+          />
         </div>
+
+        <!-- Swipeable Gallery -->
+        <div class="project-gallery-wrapper">
+
+          <button
+            class="gallery-arrow gallery-prev"
+            type="button"
+            aria-label="Previous image"
+          >
+            &#10094;
+          </button>
+
+          <div class="project-gallery">
+
+            <!-- Banner thumbnail -->
+            <% if (project.banner?.url) { %>
+              <button
+                class="gallery-thumb active"
+                type="button"
+                data-image="<%= project.banner.url %>"
+              >
+                <img
+                  src="<%= project.banner.url %>"
+                  alt="<%= project.title %> thumbnail"
+                />
+              </button>
+            <% } %>
+
+            <!-- Gallery images -->
+            <% if (project.gallery && project.gallery.length > 0) { %>
+
+              <% project.gallery.forEach(image => { %>
+
+                <button
+                  class="gallery-thumb"
+                  type="button"
+                  data-image="<%= image.url %>"
+                >
+                  <img
+                    src="<%= image.url %>"
+                    alt="<%= project.title %> gallery image"
+                  />
+                </button>
+
+              <% }) %>
+
+            <% } %>
+
+          </div>
+
+          <button
+            class="gallery-arrow gallery-next"
+            type="button"
+            aria-label="Next image"
+          >
+            &#10095;
+          </button>
+
+        </div>
+
+        <!-- Project Information -->
+        <div class="project-info">
+
+          <h3><%= project.title %></h3>
+
+          <p>
+            <%- project.location && project.location.length > 100
+              ? project.location.slice(0, 100) + "..."
+              : project.location
+            %>
+          </p>
+
+          <a
+            href="/project/<%= project._id %>"
+            class="project-btn"
+          >
+            View Details
+          </a>
+
+        </div>
+
+      </div>
+
+    <% }) %>
+
+  <% } else { %>
+    <p class="no-projects">
+      No projects available at the moment.
+    </p>
+  <% } %>
+</div>
       </main>
 
       <%- include('./partials/footer.ejs') %>
     </div>
+<script>
+  document.querySelectorAll(".project-card").forEach((card) => {
+    const mainImage = card.querySelector(".project-main-image");
+    const gallery = card.querySelector(".project-gallery");
+
+    const thumbnails = card.querySelectorAll(".gallery-thumb");
+
+    const previousButton = card.querySelector(".gallery-prev");
+    const nextButton = card.querySelector(".gallery-next");
+
+    /* Change main image when thumbnail is clicked */
+    thumbnails.forEach((thumbnail) => {
+      thumbnail.addEventListener("click", () => {
+
+        const imageUrl = thumbnail.dataset.image;
+
+        if (!imageUrl) return;
+
+        mainImage.style.opacity = "0";
+
+        setTimeout(() => {
+          mainImage.src = imageUrl;
+          mainImage.style.opacity = "1";
+        }, 150);
+
+        thumbnails.forEach((item) => {
+          item.classList.remove("active");
+        });
+
+        thumbnail.classList.add("active");
+
+        /* Bring selected thumbnail into view */
+        thumbnail.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center"
+        });
+      });
+    });
+
+
+    /* Previous button */
+    previousButton.addEventListener("click", () => {
+
+      gallery.scrollBy({
+        left: -180,
+        behavior: "smooth"
+      });
+
+    });
+
+
+    /* Next button */
+    nextButton.addEventListener("click", () => {
+
+      gallery.scrollBy({
+        left: 180,
+        behavior: "smooth"
+      });
+
+    });
+
+  });
+</script>
   </body>
 </html>
