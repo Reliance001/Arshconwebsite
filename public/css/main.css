@@ -659,8 +659,8 @@ header {
     font-size: 1rem;
   }
   .prev-btn,
-.next-btn {
-  display: none;
+.next-btn { display: none
+}
 }
 
 /* Footer Section */
