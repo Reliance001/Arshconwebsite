@@ -1668,9 +1668,7 @@ header {
 
 .gallery-thumb.active {
   opacity: 1;
-
   border-color: #b08d57;
-
   box-shadow: 0 0 0 1px rgba(176, 141, 87, 0.15);
 }
 
@@ -1681,26 +1679,18 @@ header {
 
 .gallery-arrow {
   position: absolute;
-
   z-index: 2;
-
   width: 28px;
   height: 28px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: none;
   border-radius: 50%;
-
   background: #222222;
   color: #ffffff;
-
   font-size: 14px;
-
   cursor: pointer;
-
   transition:
     background 0.25s ease,
     transform 0.25s ease;
@@ -1960,7 +1950,7 @@ header {
 /* ==========================
    PROJECT GALLERY
 ========================== */
-.project-gallery{
+.projectdetail-gallery{
 
 margin-top:80px;
 
